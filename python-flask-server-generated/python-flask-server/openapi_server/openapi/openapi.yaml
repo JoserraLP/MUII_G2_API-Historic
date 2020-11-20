@@ -1,0 +1,139 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: g2_family_lock@gmail.com
+    name: G2 - Family Lock
+    url: https://s-computing.blogspot.com/2020/09/familylock.html
+  description: This API offers services of control over historic.
+  license:
+    name: CC-BY-NC-CA-4.0
+    url: https://creativecommons.org/licenses/by-nc/4.0/
+  title: Historic Management API
+  version: "1.0"
+servers:
+- description: Production server
+  url: http://historic.familylock.es
+- description: Beta server
+  url: http://beta.historic.familylock.es
+paths:
+  /historic/{id}:
+    get:
+      description: Get one visit information
+      operationId: get_visit
+      parameters:
+      - description: ID of visit to get information
+        example: "3"
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                example: '{"device MAC":"ff:ff:ff:ff:ff:ff","date":"20/11/2020","time":"17:30:07"}'
+                title: Info
+                type: string
+          description: OK
+        404:
+          content:
+            text/plain:
+              schema:
+                example: Not found
+                title: Endpoint not found
+                type: string
+          description: Not found response
+      summary: Get one visit's information
+      tags:
+      - Historic
+      x-swagger-router-controller: LegitimatePerson
+      x-openapi-router-controller: openapi_server.controllers.legitimate_person_controller
+  /historic:
+    get:
+      description: Get all visits from historic
+      operationId: get_all_historic
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                example: '[{"id":"1","person_MAC":["ff:ff:ff:ff:ff:ff"],"date":"20/11/2020","time":"17:30:13"}]'
+                type: string
+          description: OK
+        404:
+          content:
+            text/plain:
+              schema:
+                example: Not found
+                title: Endpoint not found
+                type: string
+          description: Not found response
+      summary: Get all visits from historic
+      tags:
+      - Historic
+      x-swagger-router-controller: LegitimatePerson
+      x-openapi-router-controller: openapi_server.controllers.legitimate_person_controller
+    post:
+      description: Add a visit to historic
+      operationId: add_visit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Visit'
+        required: true
+      responses:
+        200:
+          content:
+            text/plain:
+              schema:
+                example: OK
+                title: OK
+                type: string
+          description: OK
+        404:
+          content:
+            text/plain:
+              schema:
+                example: Not found
+                title: Endpoint not found
+                type: string
+          description: Not found response
+      summary: Add a visit to historic
+      tags:
+      - Historic
+      x-swagger-router-controller: LegitimatePerson
+      x-openapi-router-controller: openapi_server.controllers.legitimate_person_controller
+components:
+  responses:
+    404NotFound:
+      content:
+        text/plain:
+          schema:
+            example: Not found
+            title: Endpoint not found
+            type: string
+      description: Not found response
+  schemas:
+    Visit:
+      example:
+        person_MAC:
+        - ff:ff:ff:ff:ff:ff
+        date: 20/11/2020
+        time: 17:30:13
+      properties:
+        person_MAC:
+          items:
+            type: string
+          type: array
+        date:
+          type: string
+        time:
+          type: string
+      type: object
+      x-body-name: visit
