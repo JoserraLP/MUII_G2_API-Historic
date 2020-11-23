@@ -51,8 +51,8 @@ paths:
       summary: Get one visit's information
       tags:
       - Historic
-      x-swagger-router-controller: LegitimatePerson
-      x-openapi-router-controller: openapi_server.controllers.legitimate_person_controller
+      x-swagger-router-controller: Historic
+      x-openapi-router-controller: openapi_server.controllers.historic_controller
   /historic:
     get:
       description: Get all visits from historic
@@ -76,8 +76,8 @@ paths:
       summary: Get all visits from historic
       tags:
       - Historic
-      x-swagger-router-controller: LegitimatePerson
-      x-openapi-router-controller: openapi_server.controllers.legitimate_person_controller
+      x-swagger-router-controller: Historic
+      x-openapi-router-controller: openapi_server.controllers.historic_controller
     post:
       description: Add a visit to historic
       operationId: add_visit
@@ -107,8 +107,8 @@ paths:
       summary: Add a visit to historic
       tags:
       - Historic
-      x-swagger-router-controller: LegitimatePerson
-      x-openapi-router-controller: openapi_server.controllers.legitimate_person_controller
+      x-swagger-router-controller: Historic
+      x-openapi-router-controller: openapi_server.controllers.historic_controller
 components:
   responses:
     404NotFound:
