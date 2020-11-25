@@ -10,11 +10,6 @@ info:
     url: https://creativecommons.org/licenses/by-nc/4.0/
   title: Historic Management API
   version: "1.0"
-servers:
-- description: Production server
-  url: http://historic.familylock.es
-- description: Beta server
-  url: http://beta.historic.familylock.es
 paths:
   /historic/{id}:
     get:
@@ -124,8 +119,8 @@ components:
       example:
         person_MAC:
         - ff:ff:ff:ff:ff:ff
-        date: 20/11/2020
-        time: 17:30:13
+        date: "20/11/2020"
+        time: "17:30:13"
       properties:
         person_MAC:
           items:

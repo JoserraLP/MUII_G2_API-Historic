@@ -1,6 +1,8 @@
 import connexion
 import six
 
+from ..__main__ import db
+
 from openapi_server.models.visit import Visit  # noqa: E501
 from openapi_server import util
 
@@ -15,9 +17,22 @@ def add_visit(visit):  # noqa: E501
 
     :rtype: str
     """
+
     if connexion.request.is_json:
         visit = Visit.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+
+    json_visit = {
+        "person_mac": visit.person_mac,
+        "date": visit.date,
+        "time": visit.time
+    }
+
+    new_visit = Visit(person_mac=json_visit['person_mac'], date=json_visit['date'], time=json_visit['time'])
+    db.session.add(new_visit)
+    db.session.commit()
+
+
+    return 'Nice POST'
 
 
 def get_all_historic():  # noqa: E501
@@ -28,7 +43,15 @@ def get_all_historic():  # noqa: E501
 
     :rtype: str
     """
-    return 'do some magic!'
+    visits = Visit.query.all()
+    results = [
+        {
+            "person_mac": visit.person_mac,
+            "visit": visit.date,
+            "date": visit.time
+        } for visit in visits]
+
+    return {"count": len(results), "visit": results}
 
 
 def get_visit(id):  # noqa: E501
@@ -41,4 +64,5 @@ def get_visit(id):  # noqa: E501
 
     :rtype: str
     """
+
     return 'do some magic!'
