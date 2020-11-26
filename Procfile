@@ -1,1 +1,1 @@
-web: gunicorn openapi_server.__main__:app -b xx.xxx.xxx.xx:8000
+web: gunicorn openapi_server.__main__:app -b 0.0.0.0:8000
