@@ -1,1 +1,1 @@
-web: gunicorn app:app -b 0.0.0.0:$PORT --log-file -
+web: gunicorn main:app -b 0.0.0.0:$PORT --log-file -
