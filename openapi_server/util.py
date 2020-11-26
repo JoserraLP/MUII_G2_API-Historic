@@ -3,6 +3,54 @@ import datetime
 import six
 import typing
 
+ # --------- JSON MANAGER --------- #
+
+import json
+from openapi_server.static.constants import DATA_URL
+
+# function to add to JSON 
+def append_to_json(data, filename=DATA_URL): 
+    try:
+        with open(filename) as json_file: 
+            file_data = json.load(json_file) 
+        
+        historic = file_data['historic'] 
+    
+        data ['id'] = len(historic)
+
+        # appending data to historic  
+        historic.append(data) 
+
+        with open(filename,'w') as json_file: 
+            json.dump(file_data, json_file, indent=4)
+
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+# function to read from JSON 
+def return_all_json_data(filename=DATA_URL): 
+    try:
+        with open(filename) as json_file: 
+            file_data = json.load(json_file) 
+        return file_data
+    except Exception as e:
+        print(e)
+        return None
+
+# function to read from JSON 
+def return_json_data(id, filename=DATA_URL): 
+    try:
+        with open(filename) as json_file: 
+            file_data = json.load(json_file) 
+
+        return list(filter(lambda x:x["id"]==id,file_data['historic']))
+    except Exception as e:
+        print(e)
+        return None
+
+ # --------- END JSON MANAGER --------- #
 
 def _deserialize(data, klass):
     """Deserializes dict, list, str into an object.

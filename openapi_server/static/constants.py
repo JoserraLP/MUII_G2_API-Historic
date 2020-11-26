@@ -1,0 +1,1 @@
+DATA_URL = "openapi_server/data/data.json"

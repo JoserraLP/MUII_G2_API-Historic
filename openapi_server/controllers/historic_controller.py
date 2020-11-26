@@ -1,7 +1,7 @@
 import connexion
 import six
 
-from ..__main__ import db
+import json
 
 from openapi_server.models.visit import Visit  # noqa: E501
 from openapi_server import util
@@ -21,19 +21,12 @@ def add_visit(visit):  # noqa: E501
     if connexion.request.is_json:
         visit = Visit.from_dict(connexion.request.get_json())  # noqa: E501
 
-    json_visit = {
-        "person_mac": visit.person_mac,
-        "date": visit.date,
-        "time": visit.time
-    }
+    success = util.append_to_json(visit.to_dict())
 
-    new_visit = Visit(person_mac=json_visit['person_mac'], date=json_visit['date'], time=json_visit['time'])
-    db.session.add(new_visit)
-    db.session.commit()
-
-
-    return 'Nice POST'
-
+    if success:
+        return "Successfully added data \n {}".format(visit.to_str())
+    else:
+        return "----- ERROR INSERTING NEW VISIT -----"
 
 def get_all_historic():  # noqa: E501
     """Get all visits from historic
@@ -43,19 +36,17 @@ def get_all_historic():  # noqa: E501
 
     :rtype: str
     """
-    visits = Visit.query.all()
-    results = [
-        {
-            "person_mac": visit.person_mac,
-            "visit": visit.date,
-            "date": visit.time
-        } for visit in visits]
+    
+    visits = util.return_all_json_data()
 
-    return {"count": len(results), "visit": results}
+    if visits:
+        return visits
+    else:
+        return "----- FAILED FETCHING HISTORIC -----"
 
 
 def get_visit(id):  # noqa: E501
-    """Get one visit&#39;s information
+    """Get one visit information
 
     Get one visit information # noqa: E501
 
@@ -65,4 +56,9 @@ def get_visit(id):  # noqa: E501
     :rtype: str
     """
 
-    return 'do some magic!'
+    visit = util.return_json_data(id)
+
+    if visit:
+        return visit
+    else:
+        return "----- FAILED FETCHING VISIT WITH ID {} -----".format(id)
