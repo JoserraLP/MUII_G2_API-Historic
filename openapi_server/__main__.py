@@ -11,7 +11,7 @@ def main():
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api('openapi.yaml', arguments={'title': 'Historic Management API'})
     app.app.config.from_object(DevelopmentConfig)
-    app.run(port=8080)
+    app.run()
 
 app = main()
 
