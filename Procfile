@@ -1,1 +1,1 @@
-web: gunicorn openapi_server.app:app --log-file=-
+web: gunicorn openapi_server.__main__:app --log-file=-
