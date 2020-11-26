@@ -8,9 +8,9 @@ from openapi_server.config.default import *
 from openapi_server import encoder
 
 port = int(os.environ.get('PORT', 8080))
+app = connexion.App(__name__, specification_dir='./openapi/')  
 
 def create_app():
-    app = connexion.App(__name__, specification_dir='./openapi/')  
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api('openapi.yaml', arguments={'title': 'Historic Management API'})
     app.app.config.from_object(DevelopmentConfig)
