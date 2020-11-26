@@ -1,1 +1,1 @@
-web: gunicorn openapi_server.__main__:main -b 0.0.0.0:$PORT --log-file -
+web: gunicorn openapi_server.__main__:app -b 0.0.0.0:$PORT
