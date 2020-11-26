@@ -13,7 +13,7 @@ def main():
     app.app.config.from_object(DevelopmentConfig)
     app.run()
 
-
+app = main()
 
 if __name__ == '__main__':
     app = main()
