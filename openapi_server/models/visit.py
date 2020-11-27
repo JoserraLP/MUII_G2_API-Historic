@@ -5,7 +5,7 @@ from datetime import date, datetime  # noqa: F401
 
 import json
 
-from typing import List, Dict  # noqa: F401
+#from typing import List, Dict  # noqa: F401
 
 from openapi_server.models.base_model_ import Model
 from openapi_server import util
@@ -27,7 +27,7 @@ class Visit(Model):
         :type time: str
         """
         self.openapi_types = {
-            'person_mac': List[str],
+            'person_mac': [str],
             'date': str,
             'time': str
         }
@@ -60,9 +60,6 @@ class Visit(Model):
         :return: The Visit of this Visit.  # noqa: E501
         :rtype: Visit
         """
-        print("*********")
-        print(dikt)
-        print("*********")
         return util.deserialize_model(dikt, cls)
 
     @property

@@ -63,12 +63,6 @@ def _deserialize(data, klass):
     if data is None:
         return None
 
-    print("-------")
-    print(data)
-    print("#######")
-    print(klass)
-    print("-------")
-
     if klass in six.integer_types or klass in (float, str, bool):
         return _deserialize_primitive(data, klass)
     elif klass == object:
@@ -155,9 +149,17 @@ def deserialize_model(data, klass):
     instance = klass()
 
     if not instance.openapi_types:
+        print("RETURNING NOT MODIFIED DATA")
         return data
 
     for attr, attr_type in six.iteritems(instance.openapi_types):
+            print("-------")
+            print(attr)
+            print("#######")
+            print(data)
+            print("#######")
+            print(attr_type)
+            print("-------")
         if data is not None \
                 and instance.attribute_map[attr] in data \
                 and isinstance(data, (list, dict)):
