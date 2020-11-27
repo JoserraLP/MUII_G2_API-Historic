@@ -6,6 +6,10 @@ import json
 from openapi_server.models.visit import Visit  # noqa: E501
 from openapi_server import util
 
+import os
+import psycopg2
+
+DATABASE_URL = os.environ['DATABASE_URL']
 
 def add_visit(visit):  # noqa: E501
     """Add a visit to historic
@@ -21,12 +25,29 @@ def add_visit(visit):  # noqa: E501
     if connexion.request.is_json:
         visit = Visit.from_dict(connexion.request.get_json())  # noqa: E501
 
-    success = util.append_to_json(visit.to_dict())
+    try:
+        conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
 
-    if success:
-        return "Successfully added data \n {}".format(visit.to_str())
-    else:
-        return "----- ERROR INSERTING NEW VISIT -----"
+        cursor = conn.cursor()
+
+        query = """ INSERT INTO historic (person_mac, date, time) VALUES (%s,%s,%s)"""
+        visit_data = (visit.person_mac, visit.date, visit.time)
+        cursor.execute(query, visit_data)
+
+        connection.commit()
+        count = cursor.rowcount
+        return "Record inserted successfully into historic table")
+
+    except (Exception, psycopg2.Error) as error :
+        if(conn):
+            return "Failed to insert record into historic table. Error =>  {}".format(error)
+    
+    finally:
+    #closing database connection.
+    if connection:
+        cursor.close()
+        connection.close()
+        print("PostgreSQL connection is closed")
 
 def get_all_historic():  # noqa: E501
     """Get all visits from historic
@@ -37,12 +58,34 @@ def get_all_historic():  # noqa: E501
     :rtype: str
     """
     
-    visits = util.return_all_json_data()
+    try:
+        conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
 
-    if visits:
-        return visits
-    else:
-        return "----- FAILED FETCHING HISTORIC -----"
+        cursor = conn.cursor()
+        query = "SELECT * FROM historic"
+
+        cursor.execute(query)
+        print("Selecting rows from historic table using cursor.fetchall")
+        historic_records = cursor.fetchall() 
+        
+        print("Print each row and it's columns values")
+        for row in historic_records:
+            print("id = ", row[0], )
+            print("person_mac = ", row[1], )
+            print("date = ", row[2])
+            print("time  = ", row[3], "\n")
+
+        return historic_records
+
+    except (Exception, psycopg2.Error) as error :
+        return "Error while fetching data from PostgreSQL. Error => {}".format(error)
+
+    finally:
+        #closing database connection.
+        if(connection):
+            cursor.close()
+            connection.close()
+            print("PostgreSQL connection is closed")
 
 
 def get_visit(id):  # noqa: E501
@@ -56,9 +99,31 @@ def get_visit(id):  # noqa: E501
     :rtype: str
     """
 
-    visit = util.return_json_data(id)
+    try:
+        conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
 
-    if visit:
-        return visit
-    else:
-        return "----- FAILED FETCHING VISIT WITH ID {} -----".format(id)
+        cursor = conn.cursor()
+        query = "SELECT * FROM historic WHERE id = {}".format(id)
+
+        cursor.execute(query)
+        print("Selecting rows from historic table using cursor.fetchall")
+        historic_records = cursor.fetchall() 
+        
+        print("Print each row and it's columns values")
+        for row in historic_records:
+            print("id = ", row[0], )
+            print("person_mac = ", row[1], )
+            print("date = ", row[2])
+            print("time  = ", row[3], "\n")
+
+        return historic_records
+
+    except (Exception, psycopg2.Error) as error :
+        return "Error while fetching data from PostgreSQL. Error => {}".format(error)
+
+    finally:
+        #closing database connection.
+        if(connection):
+            cursor.close()
+            connection.close()
+            print("PostgreSQL connection is closed")
