@@ -80,14 +80,19 @@ def get_all_historic():  # noqa: E501
         print("Selecting rows from historic table using cursor.fetchall")
         historic_records = cursor.fetchall() 
         
-        print("Print each row and it's columns values")
+        data = {"historic" : []}
         for row in historic_records:
-            print("id = ", row[0], )
-            print("person_mac = ", row[1], )
-            print("date = ", row[2])
-            print("time  = ", row[3], "\n")
+            data['historic'].append(
+                {
+                    "id": row[0],
+                    "person_mac": row[1],
+                    "date": row[2],
+                    "time": row[3]
+                }
+            )
+            
 
-        return historic_records
+        return data
 
     except (Exception, psycopg2.Error) as error :
         return "Error while fetching data from PostgreSQL. Error => {}".format(error)

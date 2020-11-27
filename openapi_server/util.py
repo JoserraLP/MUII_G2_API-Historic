@@ -73,7 +73,6 @@ def _deserialize(data, klass):
         return deserialize_datetime(data)
     elif hasattr(klass, '__origin__'):
         if klass.__origin__ == typing.List:
-            print("-- Inside Typing List --")
             return _deserialize_list(data, klass.__args__[0])
         if klass.__origin__ == dict:
             return _deserialize_dict(data, klass.__args__[1])
@@ -153,11 +152,6 @@ def deserialize_model(data, klass):
         return data
 
     for attr, attr_type in six.iteritems(instance.openapi_types):
-        print("-------")
-        print(attr)
-        print("#######")
-        print(attr_type)
-        print("-------")
         if data is not None \
                 and instance.attribute_map[attr] in data \
                 and isinstance(data, (typing.List, dict)):
