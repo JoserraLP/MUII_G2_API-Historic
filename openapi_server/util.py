@@ -64,7 +64,7 @@ def _deserialize(data, klass):
         return None
 
     print("##########")
-    print(data)
+    print(type(data))
 
     if klass in six.integer_types or klass in (float, str, bool):
         return _deserialize_primitive(data, klass)
