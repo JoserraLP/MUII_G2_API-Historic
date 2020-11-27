@@ -34,7 +34,7 @@ def add_visit(visit):  # noqa: E501
         visit_data = (visit.person_mac, visit.date, visit.time)
         cursor.execute(query, visit_data)
 
-        connection.commit()
+        conn.commit()
         count = cursor.rowcount
         return "Record inserted successfully into historic table"
 
@@ -43,11 +43,11 @@ def add_visit(visit):  # noqa: E501
             return "Failed to insert record into historic table. Error =>  {}".format(error)
     
     finally:
-    #closing database connection.
-    if connection:
-        cursor.close()
-        connection.close()
-        print("PostgreSQL connection is closed")
+        #closing database connection.
+        if conn:
+            cursor.close()
+            conn.close()
+            print("PostgreSQL connection is closed")
 
 def get_all_historic():  # noqa: E501
     """Get all visits from historic
@@ -82,9 +82,9 @@ def get_all_historic():  # noqa: E501
 
     finally:
         #closing database connection.
-        if(connection):
+        if conn:
             cursor.close()
-            connection.close()
+            conn.close()
             print("PostgreSQL connection is closed")
 
 
@@ -123,7 +123,7 @@ def get_visit(id):  # noqa: E501
 
     finally:
         #closing database connection.
-        if(connection):
+        if conn:
             cursor.close()
-            connection.close()
+            conn.close()
             print("PostgreSQL connection is closed")
