@@ -28,7 +28,7 @@ def add_visit(visit):  # noqa: E501
 
     if connexion.request.is_json:
         visit = Visit.from_dict(connexion.request.get_json())  # noqa: E501
-        print(onnexion.request.get_json())
+        print(connexion.request.get_json())
 
     conn = psycopg2.connect(user=DATABASE_USER,
                             password=DATABASE_PWD,
