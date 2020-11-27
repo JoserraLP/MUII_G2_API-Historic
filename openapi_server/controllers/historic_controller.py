@@ -28,6 +28,7 @@ def add_visit(visit):  # noqa: E501
 
     if connexion.request.is_json:
         visit = Visit.from_dict(connexion.request.get_json())  # noqa: E501
+        print(visit.to_dict())
 
     conn = psycopg2.connect(user=DATABASE_USER,
                             password=DATABASE_PWD,
@@ -38,7 +39,6 @@ def add_visit(visit):  # noqa: E501
     try:
 
         query = """ INSERT INTO historic (person_mac, date, time) VALUES (%s,%s,%s)"""
-        print(visit.person_mac)
         visit_data = (visit.person_mac, visit.date, visit.time)
         cursor.execute(query, visit_data)
 
