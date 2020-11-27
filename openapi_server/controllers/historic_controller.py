@@ -38,6 +38,7 @@ def add_visit(visit):  # noqa: E501
     try:
 
         query = """ INSERT INTO historic (person_mac, date, time) VALUES (%s,%s,%s)"""
+        print(visit.person_mac)
         visit_data = (visit.person_mac, visit.date, visit.time)
         cursor.execute(query, visit_data)
 
