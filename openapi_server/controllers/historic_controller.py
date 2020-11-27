@@ -36,7 +36,7 @@ def add_visit(visit):  # noqa: E501
 
         connection.commit()
         count = cursor.rowcount
-        return "Record inserted successfully into historic table")
+        return "Record inserted successfully into historic table"
 
     except (Exception, psycopg2.Error) as error :
         if(conn):
