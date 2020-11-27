@@ -63,9 +63,6 @@ def _deserialize(data, klass):
     if data is None:
         return None
 
-    print("##########")
-    print(type(data))
-
     if klass in six.integer_types or klass in (float, str, bool):
         return _deserialize_primitive(data, klass)
     elif klass == object:
@@ -76,6 +73,7 @@ def _deserialize(data, klass):
         return deserialize_datetime(data)
     elif hasattr(klass, '__origin__'):
         if klass.__origin__ == list:
+            print("LIST!!!!!!!!!!!!!!!!!!")
             return _deserialize_list(data, klass.__args__[0])
         if klass.__origin__ == dict:
             return _deserialize_dict(data, klass.__args__[1])
@@ -174,6 +172,8 @@ def _deserialize_list(data, boxed_type):
     :return: deserialized list.
     :rtype: list
     """
+    print([_deserialize(sub_data, boxed_type)
+            for sub_data in data])
     return [_deserialize(sub_data, boxed_type)
             for sub_data in data]
 
