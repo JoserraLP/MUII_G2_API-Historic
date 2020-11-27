@@ -25,10 +25,10 @@ def add_visit(visit):  # noqa: E501
     if connexion.request.is_json:
         visit = Visit.from_dict(connexion.request.get_json())  # noqa: E501
 
-    try:
-        conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
+    cursor = conn.cursor()
 
-        cursor = conn.cursor()
+    try:
 
         query = """ INSERT INTO historic (person_mac, date, time) VALUES (%s,%s,%s)"""
         visit_data = (visit.person_mac, visit.date, visit.time)
@@ -39,7 +39,7 @@ def add_visit(visit):  # noqa: E501
         return "Record inserted successfully into historic table"
 
     except (Exception, psycopg2.Error) as error :
-        if(conn):
+        if conn:
             return "Failed to insert record into historic table. Error =>  {}".format(error)
     
     finally:
@@ -58,10 +58,12 @@ def get_all_historic():  # noqa: E501
     :rtype: str
     """
     
+    conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
+    cursor = conn.cursor()
+    
     try:
-        conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
 
-        cursor = conn.cursor()
+        
         query = "SELECT * FROM historic"
 
         cursor.execute(query)
@@ -99,10 +101,11 @@ def get_visit(id):  # noqa: E501
     :rtype: str
     """
 
-    try:
-        conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
+    cursor = conn.cursor()
 
-        cursor = conn.cursor()
+    try:
+
         query = "SELECT * FROM historic WHERE id = {}".format(id)
 
         cursor.execute(query)
