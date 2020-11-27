@@ -171,6 +171,7 @@ def _deserialize_list(data, boxed_type):
     :return: deserialized list.
     :rtype: list
     """
+    print(data)
     return [_deserialize(sub_data, boxed_type)
             for sub_data in data]
 
