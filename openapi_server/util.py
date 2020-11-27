@@ -159,8 +159,9 @@ def deserialize_model(data, klass):
         print("-------")
         if data is not None \
                 and instance.attribute_map[attr] in data \
-                and isinstance(data, (list, dict)):
+                and isinstance(data, (typing.List, dict)):
             value = data[instance.attribute_map[attr]]
+            print(value)
             setattr(instance, attr, _deserialize(value, attr_type))
 
     return instance
