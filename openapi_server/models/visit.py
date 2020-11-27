@@ -42,12 +42,14 @@ class Visit(Model):
         self._date = date
         self._time = time
 
+    '''
     def __repr__(self):
         visit = { "person_mac": self.person_mac, 
                     "date": self.date, 
                     "time": self.time
                 }
         return json.dumps(visit)
+    '''
 
     @classmethod
     def from_dict(cls, dikt) -> 'Visit':
