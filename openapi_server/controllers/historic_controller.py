@@ -9,7 +9,11 @@ from openapi_server import util
 import os
 import psycopg2
 
-DATABASE_URL = os.environ['DATABASE_URL']
+DATABASE_PWD = os.environ['DATABASE_PWD']
+DATABASE_USER = os.environ['DATABASE_USER']
+DATABASE_DB = os.environ['DATABASE_DB']
+DATABASE_HOST = os.environ['DATABASE_HOST']
+
 
 def add_visit(visit):  # noqa: E501
     """Add a visit to historic
@@ -25,7 +29,10 @@ def add_visit(visit):  # noqa: E501
     if connexion.request.is_json:
         visit = Visit.from_dict(connexion.request.get_json())  # noqa: E501
 
-    conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(user=DATABASE_USER,
+                            password=DATABASE_PWD,
+                            host=DATABASE_HOST,
+                            database=DATABASE_DB, sslmode='require')
     cursor = conn.cursor()
 
     try:
@@ -58,7 +65,10 @@ def get_all_historic():  # noqa: E501
     :rtype: str
     """
     
-    conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(user=DATABASE_USER,
+                            password=DATABASE_PWD,
+                            host=DATABASE_HOST,
+                            database=DATABASE_DB, sslmode='require')
     cursor = conn.cursor()
     
     try:
@@ -101,7 +111,10 @@ def get_visit(id):  # noqa: E501
     :rtype: str
     """
 
-    conn = psycopg2.connect(host=DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(user=DATABASE_USER,
+                            password=DATABASE_PWD,
+                            host=DATABASE_HOST,
+                            database=DATABASE_DB, sslmode='require')
     cursor = conn.cursor()
 
     try:
