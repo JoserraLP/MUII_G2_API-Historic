@@ -63,7 +63,11 @@ def _deserialize(data, klass):
     if data is None:
         return None
 
+    print("-------")
+    print(data)
+    print("#######")
     print(klass)
+    print("-------")
 
     if klass in six.integer_types or klass in (float, str, bool):
         return _deserialize_primitive(data, klass)
@@ -75,8 +79,6 @@ def _deserialize(data, klass):
         return deserialize_datetime(data)
     elif hasattr(klass, '__origin__'):
         if klass.__origin__ == list:
-            print("LIST!!!!!!!!!!!!!!!!!!")
-            #Aqui no llega, se queda antes
             return _deserialize_list(data, klass.__args__[0])
         if klass.__origin__ == dict:
             return _deserialize_dict(data, klass.__args__[1])

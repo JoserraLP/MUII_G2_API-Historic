@@ -60,6 +60,9 @@ class Visit(Model):
         :return: The Visit of this Visit.  # noqa: E501
         :rtype: Visit
         """
+        print("*********")
+        print(dikt)
+        print("*********")
         return util.deserialize_model(dikt, cls)
 
     @property
