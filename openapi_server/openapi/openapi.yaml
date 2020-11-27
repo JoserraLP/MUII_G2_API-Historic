@@ -31,7 +31,7 @@ paths:
           content:
             application/json:
               schema:
-                example: '{"person_mac":"ff:ff:ff:ff:ff:ff","date":"20/11/2020","time":"17:30:07"}'
+                example: '{"person_MAC":"ff:ff:ff:ff:ff:ff","date":"20/11/2020","time":"17:30:07"}'
                 title: Info
                 type: string
           description: OK
@@ -57,7 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                example: '[{"id":"1","person_mac":["ff:ff:ff:ff:ff:ff"],"date":"20/11/2020","time":"17:30:13"}]'
+                example: '[{"id":"1","person_MAC":["ff:ff:ff:ff:ff:ff"],"date":"20/11/2020","time":"17:30:13"}]'
                 type: string
           description: OK
         404:
@@ -117,12 +117,12 @@ components:
   schemas:
     Visit:
       example:
-        person_mac:
+        person_MAC:
         - ff:ff:ff:ff:ff:ff
         date: "20/11/2020"
         time: "17:30:13"
       properties:
-        person_mac:
+        person_MAC:
           items:
             type: string
           type: array
