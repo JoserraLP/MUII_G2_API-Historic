@@ -149,14 +149,11 @@ def deserialize_model(data, klass):
     instance = klass()
 
     if not instance.openapi_types:
-        print("RETURNING NOT MODIFIED DATA")
         return data
 
     for attr, attr_type in six.iteritems(instance.openapi_types):
         print("-------")
         print(attr)
-        print("#######")
-        print(data)
         print("#######")
         print(attr_type)
         print("-------")
