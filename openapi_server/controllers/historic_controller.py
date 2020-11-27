@@ -85,7 +85,7 @@ def get_all_historic():  # noqa: E501
             data['historic'].append(
                 {
                     "id": row[0],
-                    "person_mac": row[1],
+                    "person_MAC": row[1],
                     "date": row[2],
                     "time": row[3]
                 }
@@ -133,7 +133,7 @@ def get_visit(id):  # noqa: E501
         print("Print each row and it's columns values")
         for row in historic_records:
             print("id = ", row[0], )
-            print("person_mac = ", row[1], )
+            print("person_MAC = ", row[1], )
             print("date = ", row[2])
             print("time  = ", row[3], "\n")
 
