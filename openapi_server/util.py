@@ -72,7 +72,8 @@ def _deserialize(data, klass):
     elif klass == datetime.datetime:
         return deserialize_datetime(data)
     elif hasattr(klass, '__origin__'):
-        if klass.__origin__ == list:
+        if klass.__origin__ == typing.List:
+            print("-- Inside Typing List --")
             return _deserialize_list(data, klass.__args__[0])
         if klass.__origin__ == dict:
             return _deserialize_dict(data, klass.__args__[1])
