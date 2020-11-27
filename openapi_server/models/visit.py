@@ -33,7 +33,7 @@ class Visit(Model):
         }
 
         self.attribute_map = {
-            'person_mac': 'person_MAC',
+            'person_mac': 'person_mac',
             'date': 'date',
             'time': 'time'
         }
