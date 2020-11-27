@@ -153,13 +153,13 @@ def deserialize_model(data, klass):
         return data
 
     for attr, attr_type in six.iteritems(instance.openapi_types):
-            print("-------")
-            print(attr)
-            print("#######")
-            print(data)
-            print("#######")
-            print(attr_type)
-            print("-------")
+        print("-------")
+        print(attr)
+        print("#######")
+        print(data)
+        print("#######")
+        print(attr_type)
+        print("-------")
         if data is not None \
                 and instance.attribute_map[attr] in data \
                 and isinstance(data, (list, dict)):
