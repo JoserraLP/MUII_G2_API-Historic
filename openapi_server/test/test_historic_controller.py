@@ -22,6 +22,7 @@ class TestHistoricController(BaseTestCase):
         """
         visit = Visit()
         mocked_add_visit.assert_not_called()
+        mocked_add_visit.return_value = None
         response = self.client.open(
             '/historic',
             method='POST',
