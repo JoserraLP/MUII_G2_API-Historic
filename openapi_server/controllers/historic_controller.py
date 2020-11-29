@@ -1,18 +1,8 @@
 import connexion
-import six
-
-import json
+from flask import jsonify
+from muii_g2_family_lock_database.Database import PostgresDB
 
 from openapi_server.models.visit import Visit  # noqa: E501
-from openapi_server import util
-
-import os
-import psycopg2
-
-DATABASE_PWD = os.environ['DATABASE_PWD']
-DATABASE_USER = os.environ['DATABASE_USER']
-DATABASE_DB = os.environ['DATABASE_DB']
-DATABASE_HOST = os.environ['DATABASE_HOST']
 
 
 def add_visit(visit):  # noqa: E501
@@ -29,32 +19,12 @@ def add_visit(visit):  # noqa: E501
     if connexion.request.is_json:
         visit = Visit.from_dict(connexion.request.get_json())  # noqa: E501
 
-    conn = psycopg2.connect(user=DATABASE_USER,
-                            password=DATABASE_PWD,
-                            host=DATABASE_HOST,
-                            database=DATABASE_DB, sslmode='require')
-    cursor = conn.cursor()
+    db = PostgresDB()
+    error = db.add_visit(visit.person_mac, visit.date, visit.time)
+    if error:
+        return error
+    return "Record inserted successfully into historic table"
 
-    try:
-
-        query = """ INSERT INTO historic (person_mac, date, time) VALUES (%s,%s,%s)"""
-        visit_data = (visit.person_mac, visit.date, visit.time)
-        cursor.execute(query, visit_data)
-
-        conn.commit()
-        count = cursor.rowcount
-        return "Record inserted successfully into historic table"
-
-    except (Exception, psycopg2.Error) as error :
-        if conn:
-            return "Failed to insert record into historic table. Error =>  {}".format(error)
-    
-    finally:
-        #closing database connection.
-        if conn:
-            cursor.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
 
 def get_all_historic():  # noqa: E501
     """Get all visits from historic
@@ -64,45 +34,12 @@ def get_all_historic():  # noqa: E501
 
     :rtype: str
     """
-    
-    conn = psycopg2.connect(user=DATABASE_USER,
-                            password=DATABASE_PWD,
-                            host=DATABASE_HOST,
-                            database=DATABASE_DB, sslmode='require')
-    cursor = conn.cursor()
-    
-    try:
+    db = PostgresDB()
+    historic_records = db.get_all_historic()
+    if "Error" in historic_records:
+        return historic_records
 
-        
-        query = "SELECT * FROM historic"
-
-        cursor.execute(query)
-        print("Selecting rows from historic table using cursor.fetchall")
-        historic_records = cursor.fetchall() 
-        
-        data = {"historic" : []}
-        for row in historic_records:
-            data['historic'].append(
-                {
-                    "id": row[0],
-                    "person_MAC": row[1],
-                    "date": row[2],
-                    "time": row[3]
-                }
-            )
-            
-
-        return data
-
-    except (Exception, psycopg2.Error) as error :
-        return "Error while fetching data from PostgreSQL. Error => {}".format(error)
-
-    finally:
-        #closing database connection.
-        if conn:
-            cursor.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
+    return jsonify({"historic": historic_records})
 
 
 def get_visit(id):  # noqa: E501
@@ -115,36 +52,9 @@ def get_visit(id):  # noqa: E501
 
     :rtype: str
     """
+    db = PostgresDB()
+    visit = db.get_visit(id)
+    if "Error" in visit:
+        return visit
 
-    conn = psycopg2.connect(user=DATABASE_USER,
-                            password=DATABASE_PWD,
-                            host=DATABASE_HOST,
-                            database=DATABASE_DB, sslmode='require')
-    cursor = conn.cursor()
-
-    try:
-
-        query = "SELECT * FROM historic WHERE id = {}".format(id)
-
-        cursor.execute(query)
-        print("Selecting rows from historic table using cursor.fetchall")
-        historic_records = cursor.fetchall() 
-        
-        print("Print each row and it's columns values")
-        for row in historic_records:
-            print("id = ", row[0], )
-            print("person_MAC = ", row[1], )
-            print("date = ", row[2])
-            print("time  = ", row[3], "\n")
-
-        return historic_records
-
-    except (Exception, psycopg2.Error) as error :
-        return "Error while fetching data from PostgreSQL. Error => {}".format(error)
-
-    finally:
-        #closing database connection.
-        if conn:
-            cursor.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
+    return jsonify({"visit": visit})
