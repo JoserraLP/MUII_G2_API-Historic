@@ -39,7 +39,18 @@ def get_all_historic():  # noqa: E501
     if "Error" in historic_records:
         return historic_records
 
-    return jsonify({"historic": historic_records})
+    data = {"historic": []}
+
+    for row in historic_records:
+        data['historic'].append(
+            {
+                "id": row[0],
+                "person_MAC": row[1],
+                "date": row[2],
+                "hour": row[3]
+            }
+        )
+    return jsonify(data)
 
 
 def get_visit(id):  # noqa: E501
@@ -56,5 +67,15 @@ def get_visit(id):  # noqa: E501
     visit = db.get_visit(id)
     if "Error" in visit:
         return visit
+    data = {"visit": []}
+    for row in visit:
+        data['visit'].append(
+            {
+                "id": row[0],
+                "person_MAC": row[1],
+                "date": row[2],
+                "hour": row[3]
+            }
+        )
 
-    return jsonify({"visit": visit})
+    return jsonify(visit)
