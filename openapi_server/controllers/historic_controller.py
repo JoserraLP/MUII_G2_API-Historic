@@ -78,4 +78,4 @@ def get_visit(id):  # noqa: E501
             }
         )
 
-    return jsonify(visit)
+    return jsonify(data)
