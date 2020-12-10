@@ -10,6 +10,11 @@ info:
     url: https://creativecommons.org/licenses/by-nc/4.0/
   title: Historic Management API
   version: "1.0"
+servers:
+  - url: https://muii-g2-api-historic.herokuapp.com/
+    description: "Production server (uses live data)"
+  - url: http://beta.muii-g2-api-historic.herokuapp.com/
+  description: "Testing server (uses test data)" 
 paths:
   /historic/{id}:
     get:
